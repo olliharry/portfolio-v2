@@ -1,30 +1,32 @@
-import React from "react";
+import React, { useRef } from "react";
+import { Html } from "@react-three/drei";
+import * as THREE from "three";
 
-const Screen = ({ width = "70vw", height = "63vh", zIndex = 1000 }) => {
+export default function Screen() {
+  const planeRef = useRef<THREE.Mesh>(null!);
+
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -66%)", // Center the element
-        width: width,
-        height: height,
-        zIndex: zIndex,
-        aspectRatio: "16 / 9", // Maintain a 16:9 aspect ratio
-      }}
+    <mesh
+      ref={planeRef}
+      position={[2.5, 1.554, -1.5]}
+      rotation={[0, -90 * (Math.PI / 180), 0]}
     >
-      <iframe
-        src={"https://three-game-app.vercel.app/"}
-        style={{
-          width: "100%",
-          height: "100%",
-          border: "none",
-        }}
-        title="Embedded Website"
-      />
-    </div>
-  );
-};
+      <planeGeometry args={[0.1, 0.1]} />
+      <meshBasicMaterial color="white" />
 
-export default Screen;
+      <Html
+        position={[0, 0, 0.01]} // Slightly above the plane to avoid z-fighting
+        transform // Allows the HTML element to follow the object's transformations
+        distanceFactor={0.145} // Adjust to control size
+      >
+        <iframe
+          src="https://three-game-app.vercel.app/"
+          width="2400px" // Adjust the size of the iframe
+          height="1080px"
+          style={{ border: "none" }}
+          title="Embedded Website"
+        />
+      </Html>
+    </mesh>
+  );
+}

@@ -33,11 +33,11 @@ export default function Scene() {
 
   return (
     <div className="w-screen h-screen">
-      {showScreen && (
+      {/* {showScreen && (
         <div>
           <Screen />
         </div>
-      )}
+      )} */}
       <Canvas shadows style={{ background: "black" }}>
         <CameraSetup />
         <OrbitControls target={target} enabled={controlsEnabled} />
@@ -69,6 +69,12 @@ export default function Scene() {
         <Saxophone />
         <Rug />
         <Weights />
+        {showScreen && (
+          <>
+            <Screen />
+          </>
+        )}
+
         <Rowing setControlsEnabled={setControlsEnabled} />
         <Degree
           setControlsEnabled={setControlsEnabled}
