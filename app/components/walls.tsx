@@ -3,18 +3,16 @@ import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
 export default function Walls() {
-  const [colorMap, normalMap, roughnessMap, aoMap] = useTexture([
+  const [colorMap, normalMap, roughnessMap] = useTexture([
     "/textures/paintedWood/Color.jpg",
     "/textures/paintedWood/NormalGL.jpg",
     "/textures/paintedWood/Roughness.jpg",
-    "/textures/paintedWood/AmbientOcclusion.jpg",
   ]);
 
   const mat = new THREE.MeshStandardMaterial({
     map: colorMap,
     normalMap: normalMap,
     roughnessMap: roughnessMap,
-    aoMap: aoMap,
   });
   const geoRef = useRef<THREE.BoxGeometry | null>(null);
   useEffect(() => {

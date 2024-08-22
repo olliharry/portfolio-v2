@@ -14,6 +14,8 @@ export default function LightSaber() {
   const { scene, camera } = useThree();
   const [isLit, setIsLit] = useState(false);
 
+  //const [lightPos, setLightPos] = useState([new THREE.Vector3(-0.5, 2.5, 2.8)]);
+
   saber.traverse(function (node) {
     if (node.type === "Mesh") {
       node.castShadow = true;
@@ -68,9 +70,9 @@ export default function LightSaber() {
     setHovered(isHovered);
     console.log(isLit);
     if (isLit) {
-      setLength((current) => Math.min(current + 0.02, 1.2));
+      setLength((current) => Math.min(current + 0.03, 1.2));
     } else {
-      setLength((current) => Math.max(current - 0.02, 0.001));
+      setLength((current) => Math.max(current - 0.03, 0.001));
     }
   });
   useEffect(() => {
@@ -91,7 +93,7 @@ export default function LightSaber() {
     <>
       <primitive
         scale={[3, 3, 3]}
-        position={[0, 2.5, 2.8]}
+        position={[-1.3, 2.6, 2.8]}
         rotation={[0, -4 * (Math.PI / 180), 90 * (Math.PI / 180)]}
         object={saber}
         ref={saberRef}
@@ -99,7 +101,7 @@ export default function LightSaber() {
       {length > 0.05 && (
         <>
           <mesh
-            position={[-0.21 - length / 2, 2.493, 2.795]}
+            position={[-1.51 - length / 2, 2.593, 2.795]}
             rotation={[-90 * (Math.PI / 180), 0, 90 * (Math.PI / 180)]}
           >
             <capsuleGeometry args={[0.012, length]} />
@@ -111,6 +113,47 @@ export default function LightSaber() {
           </mesh>
         </>
       )}
+
+      <rectAreaLight
+        width={length}
+        height={0.1}
+        color={0xff0000}
+        intensity={10}
+        position={[-1.51 - length / 2, 2.593, 2.795]}
+        rotation={[-90 * (Math.PI / 180), 0, 0]}
+      />
+      <rectAreaLight
+        width={length}
+        height={0.1}
+        color={0xff0000}
+        intensity={10}
+        position={[-1.51 - length / 2, 2.593, 2.795]}
+        rotation={[90 * (Math.PI / 180), 0, 0]}
+      />
+      <rectAreaLight
+        width={length}
+        height={0.1}
+        color={0xff0000}
+        intensity={10}
+        position={[-1.51 - length / 2, 2.593, 2.795]}
+        rotation={[0 * (Math.PI / 180), 0, 0]}
+      />
+      <rectAreaLight
+        width={length}
+        height={0.1}
+        color={0xff0000}
+        intensity={10}
+        position={[-1.51 - length / 2, 2.593, 2.795]}
+        rotation={[180 * (Math.PI / 180), 0, 0]}
+      />
+      <mesh position={[-1.06, 2.565, 2.83]} receiveShadow castShadow>
+        <boxGeometry args={[0.04, 0.02, 0.17]} />
+        <meshStandardMaterial color={0x3e1c00} />
+      </mesh>
+      <mesh position={[-1.45, 2.563, 2.83]} receiveShadow castShadow>
+        <boxGeometry args={[0.04, 0.02, 0.17]} />
+        <meshStandardMaterial color={0x3e1c00} />
+      </mesh>
     </>
   );
 }

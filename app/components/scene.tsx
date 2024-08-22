@@ -25,8 +25,8 @@ export default function Scene() {
         <OrbitControls />
         <pointLight
           castShadow
-          intensity={8}
-          position={[0, 2, 0]}
+          intensity={10}
+          position={[0, 3.5, 0]}
           shadow-bias={-0.0001}
         />
         <ambientLight intensity={0.6} />
@@ -48,7 +48,7 @@ export default function Scene() {
           <Bloom
             luminanceThreshold={0}
             luminanceSmoothing={0.9}
-            intensity={0.1} // Adjust the intensity of the bloom effect
+            intensity={0.15} // Adjust the intensity of the bloom effect
           />
         </EffectComposer>
       </Canvas>
