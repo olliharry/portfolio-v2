@@ -1,58 +1,70 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useGLTF } from "@react-three/drei";
+import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 
-interface MonitorProps {
+interface DegreeProps {
   setControlsEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   controlsEnabled: boolean;
-  setShowScreen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Monitor({
+export default function Degree({
   setControlsEnabled,
   controlsEnabled,
-  setShowScreen
-}: MonitorProps) {
-  const { scene: monitor } = useGLTF("/objects/Monitor.glb");
+}: DegreeProps) {
+  const { scene: frame } = useGLTF("/objects/frame.glb");
+  const [colorMap] = useTexture(["/textures/degree.jpg"]);
+  const [hovered, setHovered] = useState(false);
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
-  const [hovered, setHovered] = useState(false);
-  const monitorRef = useRef<THREE.Mesh>(null!);
+  const degreeRef = useRef<THREE.Mesh>(null!);
   const { scene, camera } = useThree();
+  //const [isFocused, setIsFocused] = useState(false);
   const savedCameraPosition = useRef(new THREE.Vector3());
-  
 
-  scene.traverse(function (node) {
+  const mat = new THREE.MeshStandardMaterial({
+    map: colorMap,
+  });
+
+  frame.traverse(function (node) {
     if (node.type === "Mesh") {
       node.castShadow = true;
       node.receiveShadow = true;
     }
   });
-
   function onPointerMove(event: MouseEvent) {
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
     pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
   }
+  useFrame(() => {
+    let isHovered = false;
+
+    raycaster.setFromCamera(pointer, camera);
+    const intersects = raycaster.intersectObjects(scene.children, true);
+    for (let i = 0; i < intersects.length; i++) {
+      if (intersects[i].object.name == "degree") {
+        isHovered = true;
+      }
+    }
+    setHovered(isHovered);
+  });
+
   useEffect(() => {
     function onClick(event: MouseEvent) {
       raycaster.setFromCamera(pointer, camera);
-      const intersects = raycaster.intersectObjects(monitor.children, true);
+      const intersects = raycaster.intersectObjects(scene.children, true);
 
       for (let i = 0; i < intersects.length; i++) {
         const intersectedObject = intersects[i].object;
 
-        if (intersectedObject.name === "Monitor") {
+        if (intersectedObject.name == "degree") {
           setControlsEnabled((prev) => !prev);
-          setShowScreen((prev) => !prev);
-          if (camera.position.x != 2.08) {
+
+          if (camera.position.x != 2.3) {
             savedCameraPosition.current.copy(camera.position);
-            camera.position.set(2.08, 1.5, -1.5);
-            const targetPosition = monitorRef.current.position.clone();
-            const adjustedTargetPosition = targetPosition.add(
-              new THREE.Vector3(0, 0.3, 0)
-            );
-            camera.lookAt(adjustedTargetPosition);
+            camera.position.set(2.3, 2.5, -1.8);
+            camera.lookAt(degreeRef.current.position);
             camera.updateMatrixWorld();
           } else {
             camera.position.copy(savedCameraPosition.current);
@@ -66,21 +78,9 @@ export default function Monitor({
     window.addEventListener("click", onClick);
   }, []);
 
-  useFrame(() => {
-    let isHovered = false;
-
-    raycaster.setFromCamera(pointer, camera);
-    const intersects = raycaster.intersectObjects(scene.children, true);
-    for (let i = 0; i < intersects.length; i++) {
-      if (intersects[i].object.name == "Monitor") {
-        isHovered = true;
-      }
-    }
-    setHovered(isHovered);
-  });
   useEffect(() => {
-    if (monitorRef.current) {
-      monitorRef.current.traverse((node) => {
+    if (degreeRef.current) {
+      degreeRef.current.traverse((node) => {
         // Type guard to check if node is a Mesh
         if (node instanceof THREE.Mesh) {
           node.material.emissive = hovered
@@ -93,12 +93,22 @@ export default function Monitor({
   }, [hovered]);
   window.addEventListener("pointermove", onPointerMove);
   return (
-    <primitive
-      ref={monitorRef}
-      scale={[2, 2, 2]}
-      position={[2.5, 1.195, -1.5]}
-      rotation={[0, -90 * (Math.PI / 180), 0]}
-      object={monitor}
-    />
+    <>
+      <primitive
+        scale={[1.1, 0.8, 1.1]}
+        position={[2.9, 2.5, -1.8]}
+        rotation={[0, 90 * (Math.PI / 180), 0]}
+        object={frame}
+      />
+      <mesh
+        name="degree"
+        ref={degreeRef}
+        position={[2.885, 2.495, -1.805]}
+        rotation={[0, -90 * (Math.PI / 180), 0]}
+        material={mat}
+      >
+        <planeGeometry args={[0.531, 0.666]} />
+      </mesh>
+    </>
   );
 }

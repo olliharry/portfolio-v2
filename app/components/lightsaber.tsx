@@ -68,7 +68,7 @@ export default function LightSaber() {
       }
     }
     setHovered(isHovered);
-    console.log(isLit);
+
     if (isLit) {
       setLength((current) => Math.min(current + 0.03, 1.2));
     } else {
