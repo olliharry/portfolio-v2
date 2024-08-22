@@ -22,10 +22,14 @@ import { useState, useEffect } from "react";
 import * as THREE from "three";
 import Screen from "./screen";
 import Saxophone from "./saxophone";
+import Rug from "./rug";
+import Weights from "./weights";
+import Rowing from "./rowing";
 
 export default function Scene() {
   const [controlsEnabled, setControlsEnabled] = useState(true);
   const [showScreen, setShowScreen] = useState(false);
+  const [target, setTarget] = useState(new THREE.Vector3(0, 0, 0));
 
   return (
     <div className="w-screen h-screen">
@@ -36,7 +40,7 @@ export default function Scene() {
       )}
       <Canvas shadows style={{ background: "black" }}>
         <CameraSetup />
-        <OrbitControls enabled={controlsEnabled} />
+        <OrbitControls target={target} enabled={controlsEnabled} />
         <pointLight
           castShadow
           intensity={10}
@@ -63,6 +67,9 @@ export default function Scene() {
         <Bin />
         <LightSaber />
         <Saxophone />
+        <Rug />
+        <Weights />
+        <Rowing setControlsEnabled={setControlsEnabled} />
         <Degree
           setControlsEnabled={setControlsEnabled}
           controlsEnabled={controlsEnabled}

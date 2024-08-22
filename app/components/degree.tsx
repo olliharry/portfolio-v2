@@ -63,9 +63,10 @@ export default function Degree({
 
           if (camera.position.x != 2.3) {
             savedCameraPosition.current.copy(camera.position);
-            camera.position.set(2.3, 2.5, -1.8);
-            //camera.lookAt(degreeRef.current.position);
-            camera.lookAt(new THREE.Vector3(2.885, 2.495, -1.805));
+            camera.position.set(2.3, 2.5, -1.5);
+
+            camera.lookAt(new THREE.Vector3(2.885, 2.495, -1.505));
+
             camera.updateMatrixWorld();
           } else {
             camera.position.copy(savedCameraPosition.current);
@@ -97,14 +98,14 @@ export default function Degree({
     <>
       <primitive
         scale={[1.1, 0.8, 1.1]}
-        position={[2.9, 2.5, -1.8]}
+        position={[2.9, 2.5, -1.5]}
         rotation={[0, 90 * (Math.PI / 180), 0]}
         object={frame}
       />
       <mesh
         name="degree"
         ref={degreeRef}
-        position={[2.885, 2.495, -1.805]}
+        position={[2.885, 2.495, -1.505]}
         rotation={[0, -90 * (Math.PI / 180), 0]}
         material={mat}
       >
