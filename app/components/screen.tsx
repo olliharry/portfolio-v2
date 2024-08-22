@@ -1,6 +1,6 @@
 import React from "react";
 
-const Screen = ({ width = "70%", height = "63%", zIndex = 1000 }) => {
+const Screen = ({ width = "70vw", height = "63vh", zIndex = 1000 }) => {
   return (
     <div
       style={{
@@ -11,6 +11,7 @@ const Screen = ({ width = "70%", height = "63%", zIndex = 1000 }) => {
         width: width,
         height: height,
         zIndex: zIndex,
+        aspectRatio: "16 / 9", // Maintain a 16:9 aspect ratio
       }}
     >
       <iframe

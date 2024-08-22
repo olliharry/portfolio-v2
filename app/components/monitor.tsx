@@ -12,7 +12,7 @@ interface MonitorProps {
 export default function Monitor({
   setControlsEnabled,
   controlsEnabled,
-  setShowScreen
+  setShowScreen,
 }: MonitorProps) {
   const { scene: monitor } = useGLTF("/objects/Monitor.glb");
   const raycaster = new THREE.Raycaster();
@@ -21,7 +21,6 @@ export default function Monitor({
   const monitorRef = useRef<THREE.Mesh>(null!);
   const { scene, camera } = useThree();
   const savedCameraPosition = useRef(new THREE.Vector3());
-  
 
   scene.traverse(function (node) {
     if (node.type === "Mesh") {
@@ -48,11 +47,12 @@ export default function Monitor({
           if (camera.position.x != 2.08) {
             savedCameraPosition.current.copy(camera.position);
             camera.position.set(2.08, 1.5, -1.5);
-            const targetPosition = monitorRef.current.position.clone();
+            /* const targetPosition = monitorRef.current.position.clone();
             const adjustedTargetPosition = targetPosition.add(
               new THREE.Vector3(0, 0.3, 0)
             );
-            camera.lookAt(adjustedTargetPosition);
+            console.log(adjustedTargetPosition); */
+            camera.lookAt(new THREE.Vector3(2.5, 1.495, -1.5));
             camera.updateMatrixWorld();
           } else {
             camera.position.copy(savedCameraPosition.current);

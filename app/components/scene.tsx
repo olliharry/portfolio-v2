@@ -21,6 +21,7 @@ import Degree from "./degree";
 import { useState, useEffect } from "react";
 import * as THREE from "three";
 import Screen from "./screen";
+import Saxophone from "./saxophone";
 
 export default function Scene() {
   const [controlsEnabled, setControlsEnabled] = useState(true);
@@ -61,6 +62,7 @@ export default function Scene() {
         <Shelf />
         <Bin />
         <LightSaber />
+        <Saxophone />
         <Degree
           setControlsEnabled={setControlsEnabled}
           controlsEnabled={controlsEnabled}

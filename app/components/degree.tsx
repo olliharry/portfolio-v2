@@ -64,7 +64,8 @@ export default function Degree({
           if (camera.position.x != 2.3) {
             savedCameraPosition.current.copy(camera.position);
             camera.position.set(2.3, 2.5, -1.8);
-            camera.lookAt(degreeRef.current.position);
+            //camera.lookAt(degreeRef.current.position);
+            camera.lookAt(new THREE.Vector3(2.885, 2.495, -1.805));
             camera.updateMatrixWorld();
           } else {
             camera.position.copy(savedCameraPosition.current);
