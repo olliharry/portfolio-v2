@@ -94,7 +94,7 @@ export default function Candle() {
       return;
     }
     let vertices = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
       const x = THREE.MathUtils.randFloatSpread(0.01);
       const y = THREE.MathUtils.randFloatSpread(0.02) + i / 200;
       const z = THREE.MathUtils.randFloatSpread(0.01);
@@ -125,7 +125,7 @@ export default function Candle() {
   const smokeVertices = useRef<number[]>([]);
   useEffect(() => {
     if (smokeVertices.current.length === 0) {
-      for (let i = 0; i < 30; i++) {
+      for (let i = 0; i < 15; i++) {
         const x = 0;
         const y = Math.random() * 1;
         const z = 0;
