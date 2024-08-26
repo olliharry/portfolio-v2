@@ -107,7 +107,7 @@ export default function Laptop({
       ref={laptopRef}
       scale={[0.0055, 0.004, 0.005]}
       position={[1.26, 0.77, 2]}
-      rotation={[0, 237 * (Math.PI / 180), 0]}
+      rotation={[0, 237.1 * (Math.PI / 180), 0]}
       object={laptop}
     />
   );

@@ -9,7 +9,11 @@ export default function LaptopScreen() {
     <mesh
       ref={planeRef}
       position={[1.42, 0.92, 2.106]}
-      rotation={[33 * (Math.PI / 180), 232.9 * (Math.PI / 180), 27.1 * (Math.PI / 180)]}
+      rotation={[
+        33 * (Math.PI / 180),
+        232.9 * (Math.PI / 180),
+        27.1 * (Math.PI / 180),
+      ]}
     >
       <planeGeometry args={[0.1, 0.1]} />
       <meshBasicMaterial color="white" />
@@ -21,7 +25,7 @@ export default function LaptopScreen() {
       >
         <iframe
           src="https://sort-app-lovat.vercel.app/"
-          width="2167px" // Adjust the size of the iframe
+          width="2175px" // Adjust the size of the iframe
           height="1054px"
           style={{ border: "none" }}
           title="Embedded Website"
