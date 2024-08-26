@@ -25,6 +25,8 @@ import Saxophone from "./saxophone";
 import Rug from "./rug";
 import Weights from "./weights";
 import Rowing from "./rowing";
+import Candle from "./candle";
+import NightStand from "./nightstand";
 
 export default function Scene() {
   const [rowingControlsEnabled, setRowingControlsEnabled] = useState(true);
@@ -47,16 +49,18 @@ export default function Scene() {
         />
         <pointLight
           castShadow
-          intensity={14}
+          intensity={22}
           position={[0, 3.5, 0]}
           shadow-bias={-0.0001}
         />
-        <ambientLight intensity={1.2} />
+        <ambientLight intensity={0.2} />
         <Floor />
         <Walls />
         <Footer />
         <Bed />
         <Desk />
+        <Candle />
+        <NightStand />
         <Monitor
           setControlsEnabled={setScreenControlsEnabled}
           controlsEnabled={screenControlsEnabled}
