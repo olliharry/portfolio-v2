@@ -44,19 +44,6 @@ export default function Monitor({
         if (intersectedObject.name === "Monitor") {
           setControlsEnabled((prev) => !prev);
           setShowScreen((prev) => !prev);
-          if (camera.position.x != 2.08) {
-            savedCameraPosition.current.copy(camera.position);
-            camera.position.set(2.08, 1.5, -1.5);
-            /* const targetPosition = monitorRef.current.position.clone();
-            const adjustedTargetPosition = targetPosition.add(
-              new THREE.Vector3(0, 0.3, 0)
-            );
-            console.log(adjustedTargetPosition); */
-            camera.lookAt(new THREE.Vector3(2.5, 1.495, -1.5));
-            camera.updateMatrixWorld();
-          } else {
-            camera.position.copy(savedCameraPosition.current);
-          }
 
           return;
         }
@@ -65,6 +52,24 @@ export default function Monitor({
 
     window.addEventListener("click", onClick);
   }, []);
+  const firstUpdate = useRef(true);
+  useEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+    if (camera.position.x != 2.08) {
+      savedCameraPosition.current.copy(camera.position);
+      camera.position.set(2.08, 1.5, -1.5);
+
+      camera.lookAt(new THREE.Vector3(2.5, 1.495, -1.5));
+      camera.updateMatrixWorld();
+    } else {
+      camera.position.copy(savedCameraPosition.current);
+    }
+
+    return;
+  }, [controlsEnabled]);
 
   useFrame(() => {
     let isHovered = false;

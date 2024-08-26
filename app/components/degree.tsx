@@ -60,18 +60,6 @@ export default function Degree({
 
         if (intersectedObject.name == "degree") {
           setControlsEnabled((prev) => !prev);
-
-          if (camera.position.x != 2.3) {
-            savedCameraPosition.current.copy(camera.position);
-            camera.position.set(2.3, 2.5, -1.5);
-
-            camera.lookAt(new THREE.Vector3(2.885, 2.495, -1.505));
-
-            camera.updateMatrixWorld();
-          } else {
-            camera.position.copy(savedCameraPosition.current);
-          }
-
           return;
         }
       }
@@ -79,6 +67,24 @@ export default function Degree({
 
     window.addEventListener("click", onClick);
   }, []);
+
+  const firstUpdate = useRef(true);
+  useEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+    if (camera.position.x != 2.3) {
+      savedCameraPosition.current.copy(camera.position);
+      camera.position.set(2.3, 2.5, -1.5);
+      camera.lookAt(new THREE.Vector3(2.885, 2.495, -1.505));
+      camera.updateMatrixWorld();
+    } else {
+      camera.position.copy(savedCameraPosition.current);
+    }
+
+    return;
+  }, [controlsEnabled]);
 
   useEffect(() => {
     if (degreeRef.current) {

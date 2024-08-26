@@ -27,35 +27,39 @@ import Weights from "./weights";
 import Rowing from "./rowing";
 
 export default function Scene() {
-  const [controlsEnabled, setControlsEnabled] = useState(true);
+  const [rowingControlsEnabled, setRowingControlsEnabled] = useState(true);
+  const [screenControlsEnabled, setScreenControlsEnabled] = useState(true);
+  const [degreeControlsEnabled, setDegreeControlsEnabled] = useState(true);
   const [showScreen, setShowScreen] = useState(false);
   const [target, setTarget] = useState(new THREE.Vector3(0, 0, 0));
 
   return (
     <div className="w-screen h-screen">
-      {/* {showScreen && (
-        <div>
-          <Screen />
-        </div>
-      )} */}
       <Canvas shadows style={{ background: "black" }}>
         <CameraSetup />
-        <OrbitControls target={target} enabled={controlsEnabled} />
+        <OrbitControls
+          target={target}
+          enabled={
+            rowingControlsEnabled &&
+            screenControlsEnabled &&
+            degreeControlsEnabled
+          }
+        />
         <pointLight
           castShadow
-          intensity={10}
+          intensity={14}
           position={[0, 3.5, 0]}
           shadow-bias={-0.0001}
         />
-        <ambientLight intensity={0.9} />
+        <ambientLight intensity={1.2} />
         <Floor />
         <Walls />
         <Footer />
         <Bed />
         <Desk />
         <Monitor
-          setControlsEnabled={setControlsEnabled}
-          controlsEnabled={controlsEnabled}
+          setControlsEnabled={setScreenControlsEnabled}
+          controlsEnabled={screenControlsEnabled}
           setShowScreen={setShowScreen}
         />
         <Pc />
@@ -75,10 +79,13 @@ export default function Scene() {
           </>
         )}
 
-        <Rowing setControlsEnabled={setControlsEnabled} />
+        <Rowing
+          setControlsEnabled={setRowingControlsEnabled}
+          controlsEnabled={rowingControlsEnabled}
+        />
         <Degree
-          setControlsEnabled={setControlsEnabled}
-          controlsEnabled={controlsEnabled}
+          setControlsEnabled={setDegreeControlsEnabled}
+          controlsEnabled={degreeControlsEnabled}
         />
         <EffectComposer>
           <Bloom

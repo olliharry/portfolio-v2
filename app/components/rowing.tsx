@@ -6,9 +6,13 @@ import { useFrame, useThree } from "@react-three/fiber";
 
 interface RowingProps {
   setControlsEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+  controlsEnabled: boolean;
 }
 
-export default function Rowing({ setControlsEnabled }: RowingProps) {
+export default function Rowing({
+  setControlsEnabled,
+  controlsEnabled,
+}: RowingProps) {
   const { scene: rowingFrame } = useGLTF("/objects/frame.glb");
   const [colorMap] = useTexture(["/textures/rowingpic.jpg"]);
   const [hovered, setHovered] = useState(false);
@@ -69,25 +73,31 @@ export default function Rowing({ setControlsEnabled }: RowingProps) {
 
         if (intersectedObject.name == "rowing") {
           setControlsEnabled((prev) => !prev);
-
-          if (camera.position.x != 2.4) {
-            savedCameraPosition.current.copy(camera.position);
-            camera.position.set(2.4, 2.5, 0.5);
-
-            camera.lookAt(new THREE.Vector3(2.88, 2.5, 0.5));
-
-            camera.updateMatrixWorld();
-          } else {
-            camera.position.copy(savedCameraPosition.current);
-          }
-
           return;
         }
       }
     }
-
     window.addEventListener("click", onClick);
   }, []);
+
+  const firstUpdate = useRef(true);
+  useEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+    if (camera.position.x != 2.4) {
+      savedCameraPosition.current.copy(camera.position);
+      camera.position.set(2.4, 2.5, 0.5);
+      camera.lookAt(new THREE.Vector3(2.88, 2.5, 0.5));
+      camera.updateMatrixWorld();
+    } else {
+      camera.position.copy(savedCameraPosition.current);
+      console.log(controlsEnabled);
+    }
+    return;
+  }, [controlsEnabled]);
+
   return (
     <>
       <primitive
