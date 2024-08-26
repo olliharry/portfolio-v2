@@ -69,8 +69,19 @@ export default function Candle() {
   const particlesRef1 = useRef<THREE.Points>(null!);
   const particlesRef2 = useRef<THREE.Points>(null!);
   const particlesRef3 = useRef<THREE.Points>(null!);
+  const smokeRef1 = useRef<THREE.Points>(null!);
+  const smokeRef2 = useRef<THREE.Points>(null!);
+  const smokeRef3 = useRef<THREE.Points>(null!);
   const mat = new THREE.PointsMaterial({
     color: 0xee9911,
+    size: 0.015,
+    sizeAttenuation: true,
+    transparent: true,
+    opacity: 0.8,
+    blending: THREE.AdditiveBlending,
+  });
+  const smokeMat = new THREE.PointsMaterial({
+    color: 0x848884,
     size: 0.015,
     sizeAttenuation: true,
     transparent: true,
@@ -82,7 +93,6 @@ export default function Candle() {
     if (!isLit) {
       return;
     }
-    console.log(isLit);
     let vertices = [];
     for (let i = 0; i < 10; i++) {
       const x = THREE.MathUtils.randFloatSpread(0.01);
@@ -112,6 +122,71 @@ export default function Candle() {
     particlesRef3.current.geometry.computeBoundingSphere();
   });
 
+  let smokeVertices = [];
+  for (let i = 0; i < 30; i++) {
+    const x = 0;
+    const y = Math.random() * 1;
+    const z = 0;
+    smokeVertices.push(x, y, z);
+  }
+  if (smokeRef1.current) {
+    smokeRef1.current.geometry.setAttribute(
+      "position",
+      new THREE.Float32BufferAttribute(smokeVertices, 3)
+    );
+    smokeRef1.current.geometry.computeBoundingSphere();
+    smokeRef1.current.material = smokeMat;
+  }
+  if (smokeRef2.current) {
+    smokeRef2.current.geometry.setAttribute(
+      "position",
+      new THREE.Float32BufferAttribute(smokeVertices, 3)
+    );
+    smokeRef2.current.geometry.computeBoundingSphere();
+    smokeRef2.current.material = smokeMat;
+  }
+  if (smokeRef3.current) {
+    smokeRef3.current.geometry.setAttribute(
+      "position",
+      new THREE.Float32BufferAttribute(smokeVertices, 3)
+    );
+    smokeRef3.current.geometry.computeBoundingSphere();
+    smokeRef3.current.material = smokeMat;
+  }
+
+  useFrame(() => {
+    if (!isLit) {
+      return;
+    }
+    for (let i = 0; i < smokeVertices.length; i += 3) {
+      if (smokeVertices[i + 1] > 1) {
+        smokeVertices[i] = 0;
+        smokeVertices[i + 1] = 0;
+        smokeVertices[i + 2] = 0;
+        continue;
+      }
+
+      smokeVertices[i] += THREE.MathUtils.randFloatSpread(0.004);
+      smokeVertices[i + 1] += Math.random() * 0.008;
+      smokeVertices[i + 2] += THREE.MathUtils.randFloatSpread(0.004);
+    }
+    smokeRef1.current.geometry.setAttribute(
+      "position",
+      new THREE.Float32BufferAttribute(smokeVertices, 3)
+    );
+    smokeRef1.current.material = smokeMat;
+    smokeRef2.current.geometry.setAttribute(
+      "position",
+      new THREE.Float32BufferAttribute(smokeVertices, 3)
+    );
+    smokeRef2.current.material = smokeMat;
+    smokeRef3.current.geometry.setAttribute(
+      "position",
+      new THREE.Float32BufferAttribute(smokeVertices, 3)
+    );
+    smokeRef3.current.material = smokeMat;
+  });
+
   return (
     <>
       <primitive
@@ -134,6 +209,9 @@ export default function Candle() {
             intensity={0.5}
             decay={1.6}
           />
+          <points position={[2.743, 0.99, 0.398]} ref={smokeRef1} />
+          <points position={[2.696, 0.93, 0.415]} ref={smokeRef2} />
+          <points position={[2.697, 0.95, 0.348]} ref={smokeRef3} />
         </>
       )}
     </>
