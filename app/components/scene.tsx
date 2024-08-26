@@ -27,11 +27,14 @@ import Weights from "./weights";
 import Rowing from "./rowing";
 import Candle from "./candle";
 import NightStand from "./nightstand";
+import Laptop from "./laptop";
+import LaptopScreen from "./laptopScreen";
 
 export default function Scene() {
   const [rowingControlsEnabled, setRowingControlsEnabled] = useState(true);
   const [screenControlsEnabled, setScreenControlsEnabled] = useState(true);
   const [degreeControlsEnabled, setDegreeControlsEnabled] = useState(true);
+  const [laptopControlsEnabled, setLaptopControlsEnabled] = useState(true);
   const [showScreen, setShowScreen] = useState(false);
   const [target, setTarget] = useState(new THREE.Vector3(0, 0, 0));
 
@@ -44,7 +47,8 @@ export default function Scene() {
           enabled={
             rowingControlsEnabled &&
             screenControlsEnabled &&
-            degreeControlsEnabled
+            degreeControlsEnabled &&
+            laptopControlsEnabled
           }
         />
         <pointLight
@@ -73,6 +77,10 @@ export default function Scene() {
         <Chair />
         <Shelf />
         <Bin />
+        <Laptop
+          setControlsEnabled={setLaptopControlsEnabled}
+          controlsEnabled={laptopControlsEnabled}
+        />
         <LightSaber />
         <Saxophone />
         <Rug />
@@ -82,6 +90,7 @@ export default function Scene() {
             <Screen />
           </>
         )}
+        {!laptopControlsEnabled && <LaptopScreen />}
 
         <Rowing
           setControlsEnabled={setRowingControlsEnabled}
