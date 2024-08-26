@@ -122,17 +122,21 @@ export default function Candle() {
     particlesRef3.current.geometry.computeBoundingSphere();
   });
 
-  let smokeVertices = [];
-  for (let i = 0; i < 30; i++) {
-    const x = 0;
-    const y = Math.random() * 1;
-    const z = 0;
-    smokeVertices.push(x, y, z);
-  }
+  const smokeVertices = useRef<number[]>([]);
+  useEffect(() => {
+    if (smokeVertices.current.length === 0) {
+      for (let i = 0; i < 30; i++) {
+        const x = 0;
+        const y = Math.random() * 1;
+        const z = 0;
+        smokeVertices.current.push(x, y, z);
+      }
+    }
+  }, []);
   if (smokeRef1.current) {
     smokeRef1.current.geometry.setAttribute(
       "position",
-      new THREE.Float32BufferAttribute(smokeVertices, 3)
+      new THREE.Float32BufferAttribute(smokeVertices.current, 3)
     );
     smokeRef1.current.geometry.computeBoundingSphere();
     smokeRef1.current.material = smokeMat;
@@ -140,7 +144,7 @@ export default function Candle() {
   if (smokeRef2.current) {
     smokeRef2.current.geometry.setAttribute(
       "position",
-      new THREE.Float32BufferAttribute(smokeVertices, 3)
+      new THREE.Float32BufferAttribute(smokeVertices.current, 3)
     );
     smokeRef2.current.geometry.computeBoundingSphere();
     smokeRef2.current.material = smokeMat;
@@ -148,7 +152,7 @@ export default function Candle() {
   if (smokeRef3.current) {
     smokeRef3.current.geometry.setAttribute(
       "position",
-      new THREE.Float32BufferAttribute(smokeVertices, 3)
+      new THREE.Float32BufferAttribute(smokeVertices.current, 3)
     );
     smokeRef3.current.geometry.computeBoundingSphere();
     smokeRef3.current.material = smokeMat;
@@ -158,31 +162,31 @@ export default function Candle() {
     if (!isLit) {
       return;
     }
-    for (let i = 0; i < smokeVertices.length; i += 3) {
-      if (smokeVertices[i + 1] > 1) {
-        smokeVertices[i] = 0;
-        smokeVertices[i + 1] = 0;
-        smokeVertices[i + 2] = 0;
+    for (let i = 0; i < smokeVertices.current.length; i += 3) {
+      if (smokeVertices.current[i + 1] > 1) {
+        smokeVertices.current[i] = 0;
+        smokeVertices.current[i + 1] = 0;
+        smokeVertices.current[i + 2] = 0;
         continue;
       }
 
-      smokeVertices[i] += THREE.MathUtils.randFloatSpread(0.004);
-      smokeVertices[i + 1] += Math.random() * 0.008;
-      smokeVertices[i + 2] += THREE.MathUtils.randFloatSpread(0.004);
+      smokeVertices.current[i] += THREE.MathUtils.randFloatSpread(0.004);
+      smokeVertices.current[i + 1] += Math.random() * 0.008;
+      smokeVertices.current[i + 2] += THREE.MathUtils.randFloatSpread(0.004);
     }
     smokeRef1.current.geometry.setAttribute(
       "position",
-      new THREE.Float32BufferAttribute(smokeVertices, 3)
+      new THREE.Float32BufferAttribute(smokeVertices.current, 3)
     );
     smokeRef1.current.material = smokeMat;
     smokeRef2.current.geometry.setAttribute(
       "position",
-      new THREE.Float32BufferAttribute(smokeVertices, 3)
+      new THREE.Float32BufferAttribute(smokeVertices.current, 3)
     );
     smokeRef2.current.material = smokeMat;
     smokeRef3.current.geometry.setAttribute(
       "position",
-      new THREE.Float32BufferAttribute(smokeVertices, 3)
+      new THREE.Float32BufferAttribute(smokeVertices.current, 3)
     );
     smokeRef3.current.material = smokeMat;
   });
@@ -201,7 +205,9 @@ export default function Candle() {
           <points position={[2.743, 0.99, 0.398]} ref={particlesRef1} />
           <points position={[2.696, 0.93, 0.415]} ref={particlesRef2} />
           <points position={[2.697, 0.95, 0.348]} ref={particlesRef3} />
-
+          <points position={[2.743, 0.99, 0.398]} ref={smokeRef1} />
+          <points position={[2.696, 0.93, 0.415]} ref={smokeRef2} />
+          <points position={[2.697, 0.95, 0.348]} ref={smokeRef3} />
           <pointLight
             castShadow
             position={[2.7, 1, 0.35]}
@@ -209,9 +215,6 @@ export default function Candle() {
             intensity={0.5}
             decay={1.6}
           />
-          <points position={[2.743, 0.99, 0.398]} ref={smokeRef1} />
-          <points position={[2.696, 0.93, 0.415]} ref={smokeRef2} />
-          <points position={[2.697, 0.95, 0.348]} ref={smokeRef3} />
         </>
       )}
     </>
