@@ -30,6 +30,7 @@ import NightStand from "./nightstand";
 import Laptop from "./laptop";
 import LaptopScreen from "./laptopScreen";
 import MyLoader from "./myLoader";
+import Info from "./info";
 
 export default function Scene() {
   const [rowingControlsEnabled, setRowingControlsEnabled] = useState(true);
@@ -41,6 +42,7 @@ export default function Scene() {
 
   return (
     <div className="w-screen h-screen">
+      <Info />
       <Canvas shadows style={{ background: "black" }}>
         <CameraSetup />
         <OrbitControls
