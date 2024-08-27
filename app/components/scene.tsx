@@ -1,5 +1,5 @@
 "use client";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, useProgress } from "@react-three/drei";
 import { Canvas, useThree } from "@react-three/fiber";
 import React from "react";
 import Floor from "./floor";
@@ -29,6 +29,7 @@ import Candle from "./candle";
 import NightStand from "./nightstand";
 import Laptop from "./laptop";
 import LaptopScreen from "./laptopScreen";
+import Loaderr from "./loader";
 
 export default function Scene() {
   const [rowingControlsEnabled, setRowingControlsEnabled] = useState(true);
@@ -107,6 +108,7 @@ export default function Scene() {
             intensity={0.15} // Adjust the intensity of the bloom effect
           />
         </EffectComposer>
+        <Loaderr />
       </Canvas>
     </div>
   );
