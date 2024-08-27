@@ -1,7 +1,7 @@
 "use client";
-import { OrbitControls, useProgress } from "@react-three/drei";
+import { Loader, OrbitControls, useProgress } from "@react-three/drei";
 import { Canvas, useThree } from "@react-three/fiber";
-import React from "react";
+import React, { Suspense } from "react";
 import Floor from "./floor";
 import Walls from "./walls";
 import Footer from "./footer";
@@ -29,7 +29,7 @@ import Candle from "./candle";
 import NightStand from "./nightstand";
 import Laptop from "./laptop";
 import LaptopScreen from "./laptopScreen";
-import Loaderr from "./loader";
+import MyLoader from "./myLoader";
 
 export default function Scene() {
   const [rowingControlsEnabled, setRowingControlsEnabled] = useState(true);
@@ -59,48 +59,50 @@ export default function Scene() {
           shadow-bias={-0.0001}
         />
         <ambientLight intensity={0.2} />
-        <Floor />
-        <Walls />
-        <Footer />
-        <Bed />
-        <Desk />
-        <Candle />
-        <NightStand />
-        <Monitor
-          setControlsEnabled={setScreenControlsEnabled}
-          controlsEnabled={screenControlsEnabled}
-          setShowScreen={setShowScreen}
-        />
-        <Pc />
-        <Board />
-        <Mouse />
-        <DeskLight />
-        <Chair />
-        <Shelf />
-        <Bin />
-        <Laptop
-          setControlsEnabled={setLaptopControlsEnabled}
-          controlsEnabled={laptopControlsEnabled}
-        />
-        <LightSaber />
-        <Saxophone />
-        <Rug />
-        <Weights />
-        {showScreen && (
-          <>
-            <Screen />
-          </>
-        )}
-        {!laptopControlsEnabled && <LaptopScreen />}
+        <Suspense fallback={<MyLoader />}>
+          <Floor />
+          <Walls />
+          <Footer />
+          <Bed />
+          <Desk />
+          <Candle />
+          <NightStand />
+          <Monitor
+            setControlsEnabled={setScreenControlsEnabled}
+            controlsEnabled={screenControlsEnabled}
+            setShowScreen={setShowScreen}
+          />
+          <Pc />
+          <Board />
+          <Mouse />
+          <DeskLight />
+          <Chair />
+          <Shelf />
+          <Bin />
+          <Laptop
+            setControlsEnabled={setLaptopControlsEnabled}
+            controlsEnabled={laptopControlsEnabled}
+          />
+          <LightSaber />
+          <Saxophone />
+          <Rug />
+          <Weights />
+          {showScreen && (
+            <>
+              <Screen />
+            </>
+          )}
+          {!laptopControlsEnabled && <LaptopScreen />}
 
-        <Rowing
-          setControlsEnabled={setRowingControlsEnabled}
-          controlsEnabled={rowingControlsEnabled}
-        />
-        <Degree
-          setControlsEnabled={setDegreeControlsEnabled}
-          controlsEnabled={degreeControlsEnabled}
-        />
+          <Rowing
+            setControlsEnabled={setRowingControlsEnabled}
+            controlsEnabled={rowingControlsEnabled}
+          />
+          <Degree
+            setControlsEnabled={setDegreeControlsEnabled}
+            controlsEnabled={degreeControlsEnabled}
+          />
+        </Suspense>
         <EffectComposer>
           <Bloom
             luminanceThreshold={0}
@@ -108,7 +110,6 @@ export default function Scene() {
             intensity={0.15} // Adjust the intensity of the bloom effect
           />
         </EffectComposer>
-        <Loaderr />
       </Canvas>
     </div>
   );
