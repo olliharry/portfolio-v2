@@ -7,7 +7,7 @@ function MyLoader() {
   return (
     <Html center>
       <div style={{ color: "white", textAlign: "center" }}>
-        {active && <p>Loading... {Math.round(progress)}%</p>}
+        {active && <p>Loading...</p>}
       </div>
     </Html>
   );

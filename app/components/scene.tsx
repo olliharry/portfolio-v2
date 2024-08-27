@@ -37,13 +37,16 @@ export default function Scene() {
   const [degreeControlsEnabled, setDegreeControlsEnabled] = useState(true);
   const [laptopControlsEnabled, setLaptopControlsEnabled] = useState(true);
   const [showScreen, setShowScreen] = useState(false);
-  const [target, setTarget] = useState(new THREE.Vector3(0, 0, 0));
+  const [target, setTarget] = useState(new THREE.Vector3(0, 2, 0));
 
   return (
     <div className="w-screen h-screen">
       <Canvas shadows style={{ background: "black" }}>
         <CameraSetup />
         <OrbitControls
+          maxDistance={3}
+          minDistance={1}
+          enablePan={false}
           target={target}
           enabled={
             rowingControlsEnabled &&
@@ -117,7 +120,7 @@ export default function Scene() {
 function CameraSetup() {
   const { camera } = useThree();
   useEffect(() => {
-    camera.position.set(-3, 4, -5);
+    camera.position.set(-2, 3, -2);
 
     camera.lookAt(new THREE.Vector3(0, 0, 0));
   }, [camera]);
